@@ -1,4 +1,4 @@
-﻿/* ************************************************************************** */
+/* ************************************************************************** */
 /* 美佳のタイプトレーナー JAVASCRIPT版ソースコード Ver2.06.01   2023/8/21     */
 /*                                          	   Ver2.06.02   2023/12/27    */
 /*                                          	   Ver2.06.03   2024/11/22    */
@@ -84,14 +84,14 @@ MIKA_c_pos2=MIKA_a_pos2; /* キーボード 上一段 刻印文字列 */
 MIKA_c_pos3=MIKA_a_pos3+";"; /* キーボード ホームポジション 刻印文字列 */
 MIKA_c_pos4=MIKA_a_pos4+",."; /* キーボード 下一段刻文字列印 */
 MIKA_c_post = [ MIKA_c_pos1,MIKA_c_pos2,MIKA_c_pos3,MIKA_c_pos4 ]; /* キーボード刻印文字列テーブル */
-MIKA_h_pos1=MIKA_a_pos3+";"; /* ホームポジション 練習文字列 */
+MIKA_h_pos1=MIKA_a_pos3; /* ホームポジション 練習文字列 */
 MIKA_h_pos2=MIKA_a_pos2; /* 上一段 練習文字列 */
-MIKA_h_pos3=MIKA_a_pos3+";"+MIKA_a_pos2; /* ホームポジション＋上一段 練習文字列 */
+MIKA_h_pos3=MIKA_a_pos3+MIKA_a_pos2; /* ホームポジション＋上一段 練習文字列 */
 MIKA_h_pos4=MIKA_a_pos4+",."; /* 下一段 練習文字列 */
-MIKA_h_pos5=MIKA_a_pos3+";"+MIKA_a_pos4+",."; /* ホームポジション＋下一段 練習文字列 */
-MIKA_h_pos6=MIKA_a_pos3+";"+MIKA_a_pos2+MIKA_a_pos4+",."; /* ホームポジション＋上一段＋下一段 練習文字列 */
+MIKA_h_pos5=MIKA_a_pos3+MIKA_a_pos4+",."; /* ホームポジション＋下一段 練習文字列 */
+MIKA_h_pos6=MIKA_a_pos3+MIKA_a_pos2+MIKA_a_pos4+",."; /* ホームポジション＋上一段＋下一段 練習文字列 */
 MIKA_h_pos7 =MIKA_a_pos1; /* 数字 練習文字列 */
-MIKA_h_pos8=MIKA_a_pos3+";"+MIKA_a_pos2+MIKA_a_pos4+",."+MIKA_a_pos1; /* 全段 練習文字列 */
+MIKA_h_pos8=MIKA_a_pos3+MIKA_a_pos2+MIKA_a_pos4+",."+MIKA_a_pos1; /* 全段 練習文字列 */
 MIKA_h_pos = [ MIKA_h_pos1,MIKA_h_pos2,MIKA_h_pos3,MIKA_h_pos4,MIKA_h_pos5,MIKA_h_pos6,MIKA_h_pos7,MIKA_h_pos8]; /* ポジション練習 ランダム練習 練習文字列テーブル */
 MIKA_p_count=null; /* 練習回数配列 アドレス */
 MIKA_p_count_position=[0,0,0,0,0,0,0,0]; /* ポジション練習 練習回数 */
@@ -161,9 +161,10 @@ MIKA_width_x=16; /* 全角文字 半角文字 縦方向ドット数 */
 MIKA_width_y=8; /* 半角文字 横方向ドット数 */
 MIKA_practice_end_flag=0; /* 練習実行中フラグ =0 練習中 =1 終了中 ESCによる終了も含む */
 MIKA_key_guide_flag=0; /* キーガイドメッセージ表示フラグ =0 表示なし =1 次回はキーガイドを表示を消して練習 =2次回はキーガイドを表示を消して練習 */
-MIKA_menu_kind_flag=0; /* =1 キーガイド表示あり =3 キーガイド表示無し */
+MIKA_menu_kind_flag=0; /* =1 キーガイド表示あり =2 キーボードのみ表示(ヒント無し) =3 キーガイド表示無し */
 MIKA_key_guide_on=1; /* 定数 キーガイド表示あり */
 MIKA_key_guide_off=3; /* 定数 キーガイド表示無し */
+MIKA_key_guide_kbd=2; /* 定数 キーボード(刻印)のみ表示 ヒント(ガイドキー・指)は表示しない */
 MIKA_type_end_flag = 0; /* 練習終了フラグ =0 ESCによる終了 =1 60文字入力による終了 */
 MIKA_mes0="●●●  美佳のタイプトレーナー Ver2.06.03  ●●●";
 MIKA_mes0a="●●●  美佳のタイプトレーナー ポジション練習　●●●";
@@ -181,6 +182,7 @@ MIKA_return_mes="ESCキーを押すとメニューに戻ります";
 MIKA_key_type_mes="のキーを打ちましょうね．．";
 MIKA_keymes1="ｽﾍﾟｰｽを押すとｷｰｶﾞｲﾄﾞを消去します";
 MIKA_keymes2="ｽﾍﾟｰｽを押すとｷｰｶﾞｲﾄﾞを表示します";
+MIKA_keymes5="ｽﾍﾟｰｽを押すとｷｰﾎﾞｰﾄﾞの刻印を消去します"; /* ｷｰﾎﾞｰﾄﾞのみ表示中のメッセージ */
 MIKA_keymes3="この次は、スペースキーを押してキーガイドの表示を消して練習してみましょうね";
 MIKA_keymes4="この次は、スペースキーを押してキーガイドを表示して練習してみましょうね";
 MIKA_mest2="練習項目           タイプ速度　文字／分       達成日       累積練習時間";
@@ -3311,28 +3313,23 @@ function dispseikai(g,flag) /* 正解数表示 */
 		}
 		cslput(g,2*16,64*8,type_mes); /* 正解数メッセージ表示 */
 }
-function dispkeygideonoff(g,flag) /* キーガイド表示オンオフメッセージ表示 */
-// flag=1 前回のメッセージを消去してから今回のメッセージを表示
+function keyguidemessage(mode) /* キーガイドモードに対応したスペースキー操作メッセージを取得 */
+	{
+		if(mode==MIKA_key_guide_on) return MIKA_keymes1; /* ガイド表示中 「スペースを押すとキーガイドを消去します」 */
+		if(mode==MIKA_key_guide_kbd) return MIKA_keymes5; /* キーボードのみ表示中 「スペースを押すとキーボードの刻印を消去します」 */
+		return MIKA_keymes2; /* ガイド非表示中 「スペースを押すとキーガイドを表示します」 */
+	}
+function dispkeygideonoff(g,flag,prev) /* キーガイド表示オンオフメッセージ表示 */
+// flag=1 前回(prev)のメッセージを消去してから今回のメッセージを表示
 // flag=0 今回のメッセージのみを表示
 	{
-		var keymes1,keymes2;
-		if(MIKA_menu_kind_flag==MIKA_key_guide_on) /* ガイドキー文字表示がオンの場合 */
-		{
-			keymes1=MIKA_keymes1; /* 表示メッセージに「スペースを押すとキーガイドを消去します」を指定 */
-			keymes2=MIKA_keymes2; /* 消去メッセージに「スペースを押すとキーガイドを表示します」を指定 */
-		}
-		else /* ガイドキー文字表示がオフの場合 */
-		{
-			keymes1=MIKA_keymes2; /* 表示メッセージに「スペースを押すとキーガイドを表示します」を指定 */
-			keymes2=MIKA_keymes1; /* 消去メッセージに「スペースを押すとキーガイドを消去します」を指定 */
-		}
 		if(flag==1)
 		{
 			cslcolor(g,MIKA_bk_color); /* メッセージの表示色を背景色に設定 */
-			cslput(g,16,1,keymes2); /* 前回のメッセージを消去 */
+			cslput(g,16,1,keyguidemessage(prev)); /* 前回のメッセージを消去 */
 		}
 		cslcolor(g,MIKA_cyan); /* メッセージの表示色をシアンに設定 */
-		cslput(g,16,1,keymes1); /* 今回のメッセージを表示 */
+		cslput(g,16,1,keyguidemessage(MIKA_menu_kind_flag)); /* 今回のメッセージを表示 */
 	}
 function disptitle(g,mes,submes) /* 練習項目を画面上部に表示 */
 // mes 練習種別メッセージ
@@ -3774,16 +3771,23 @@ function preptrain(func_no) /* 練習の前処理 */
 		getromaji(MIKA_w_count); /* 最初の練習文字のローマ字読み取得 */
 	}
 }
-function keyguideoff(g) /* ポジション練習のキーガイドをオフにする */
+function keyguideoff(g,prev) /* ポジション練習のキーガイドをオフにする(刻印も消去) */
 	{
-			dispkeygideonoff(g,1); /* スペースキーを押すとキーガイドを表示しますのメッセージを表示 */
+			dispkeygideonoff(g,1,prev); /* スペースキーを押すとキーガイドを表示しますのメッセージを表示 */
 			diposit(g,3); /* キーボードイラストの刻印を消去する */
 			MIKA_guide_char=0; /* ガイドキー文字にゼロを設定 */
 			dikposit(g,MIKA_err_char,3); /* エラー文字を表示する */
 	}
-function keyguideon(g) /* ポジション練習のキーガイドをオンにする */
+function keyguidekbd(g,prev) /* ポジション練習をキーボード表示のみにする(ガイドキー・指のヒントは出さない) */
 	{
-			dispkeygideonoff(g,1); /* スペースキーを押すとガイドキーを消去しますのメッセージを表示 */
+			dispkeygideonoff(g,1,prev); /* スペースキーを押すとキーボードの刻印を消去しますのメッセージを表示 */
+			dikposit(g,MIKA_guide_char,1); /* ガイドキーの強調表示を刻印ありで元に戻す */
+			MIKA_guide_char=0; /* ガイドキー文字にゼロを設定 */
+			dikposit(g,MIKA_err_char,3); /* エラー文字を表示する */
+	}
+function keyguideon(g,prev) /* ポジション練習のキーガイドをオンにする */
+	{
+			dispkeygideonoff(g,1,prev); /* スペースキーを押すとガイドキーを消去しますのメッセージを表示 */
 			diposit(g,2); /* キーボードイラストの刻印を表示する */
 			MIKA_guide_char=MIKA_key_char; /* ガイドキー文字に練習文字を設定*/
 			dikposit(g,MIKA_guide_char,0); /* ガイドキー文字を表示する */
@@ -3864,36 +3868,31 @@ function procptrain(g,nChar) /* ポジション練習の文字入力処理 */
 {
 	if(nChar==' ') /* 入力文字がスペースの場合 */
 	{
-		if(MIKA_practice_end_flag==0) /* 入力練習実行中の場合 */
+		/* スペースキーで ガイド表示 → キーボードのみ(ヒント無し) → ガイド非表示 → ガイド表示 の順に切り替える */
+		var running=(MIKA_practice_end_flag==0); /* 練習実行中フラグ */
+		var prev=MIKA_menu_kind_flag; /* 切り替え前のモード */
+		if(prev==MIKA_key_guide_on) /* ガイド表示中 → キーボードのみ表示 */
 		{
-				if(MIKA_menu_kind_flag==MIKA_key_guide_on) /* キーガイド表示中の場合 */
-				{
-					MIKA_menu_kind_flag=MIKA_key_guide_off; /* キーガイド表示フラグをキーガイド表示無しに設定 */
-					if(MIKA_type_count==0) MIKA_Procptimer=setTimeout(Procptimer,3000,g); /* 最初の文字はタイマーを三秒に設定 */
-					else  MIKA_Procptimer=setTimeout(Procptimer,2000,g); /* 二度め以降はタイマーを二秒に設定 */
-					difposit(g,MIKA_guide_char,1); /* 練習文字に対応した指の爪の表示を消去 */
-					keyguideoff(g); /* ポジション練習のキーガイドをオフにする */
-				}
-				else
-				{
-					if(MIKA_guide_char==0){ /* ガイドキー文字位置が未表示の場合 */
-						clearTimeout(MIKA_Procptimer); /* タイマーキャンセル */
-					}
-					MIKA_menu_kind_flag=MIKA_key_guide_on; /* キーガイド表示フラグをキーガイド表示無しに設定 */
-					keyguideon(g); /* ポジション練習のキーガイドをオフにする */
-					difposit(g,MIKA_guide_char,0); /* 練習文字に対応した指の爪の位置を表示 */				
-				}
+			MIKA_menu_kind_flag=MIKA_key_guide_kbd;
+			if(running) difposit(g,MIKA_guide_char,1); /* 練習文字に対応した指の爪の表示を消去 */
+			keyguidekbd(g,prev); /* ガイドキーと指のヒントを消してキーボードのみにする */
 		}
-		else if(MIKA_practice_end_flag==1){ /* 練習終了時の場合 */
-			if(MIKA_menu_kind_flag==MIKA_key_guide_on){ /* キーガイド表示中の場合 */
-				MIKA_menu_kind_flag=MIKA_key_guide_off; /* キーガイド表示フラグをキーガイド表示無しに設定 */
-					keyguideoff(g); /* ポジション練習のキーガイドをオフにする */
-			}
-			else /* キーガイド表示無しの場合 */
+		else if(prev==MIKA_key_guide_kbd) /* キーボードのみ表示中 → ガイド非表示(刻印も消去) */
+		{
+			MIKA_menu_kind_flag=MIKA_key_guide_off;
+			if(running)
 			{
-				MIKA_menu_kind_flag=MIKA_key_guide_on; /* キーガイド表示フラグをキーガイド表示ありに設定 */
-				keyguideon(g); /* ポジション練習のキーガイドをオンにする */
+				if(MIKA_type_count==0) MIKA_Procptimer=setTimeout(Procptimer,3000,g); /* 最初の文字はタイマーを三秒に設定 */
+				else MIKA_Procptimer=setTimeout(Procptimer,2000,g); /* 二度め以降はタイマーを二秒に設定 */
 			}
+			keyguideoff(g,prev); /* キーボードの刻印を消去する */
+		}
+		else /* ガイド非表示中 → ガイド表示 */
+		{
+			if(running&&MIKA_guide_char==0) clearTimeout(MIKA_Procptimer); /* ガイドキー文字位置が未表示の場合はタイマーキャンセル */
+			MIKA_menu_kind_flag=MIKA_key_guide_on;
+			keyguideon(g,prev); /* ガイドキーを表示する */
+			if(running) difposit(g,MIKA_guide_char,0); /* 練習文字に対応した指の爪の位置を表示 */
 		}
 	}
 	else if(nChar==0x1b){ /* エスケープキー入力の場合 */
@@ -3977,7 +3976,7 @@ function procptrain(g,nChar) /* ポジション練習の文字入力処理 */
 				MIKA_p_count[MIKA_type_kind_no]++; /* 練習回数加算 */
 				dispsecond(g,0); /* 今回練習時間表示 */
 				dispkaisu(g,0); /* 今回練習回数表示 */
-				if(MIKA_type_err_count<=5&&MIKA_menu_kind_flag==MIKA_key_guide_on) /* エラー回数が5以下でキーガイド表示ありの場合 */
+				if(MIKA_type_err_count<=5&&(MIKA_menu_kind_flag==MIKA_key_guide_on||MIKA_menu_kind_flag==MIKA_key_guide_kbd)) /* エラー回数が5以下でキーガイド表示ありの場合 */
 				{
 					MIKA_key_guide_flag=1;
 					dispkeyguidonoffmes(g,0); /* 「この次は、スペースキーを押してキーガイドの表示を消して練習してみましょうね」メーセージを表示 */
